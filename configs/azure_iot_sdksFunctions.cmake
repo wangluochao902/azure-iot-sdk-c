@@ -70,8 +70,8 @@ function(linkUAMQP whatExecutableIsBuilding)
         endif()
     else()
         target_link_libraries(${whatExecutableIsBuilding}
-            PUBLIC
-                uamqp aziotsharedutil OpenSSL::SSL OpenSSL::Crypto)
+                uamqp aziotsharedutil OpenSSL::SSL OpenSSL::Crypto
+        )
     endif()
 endfunction(linkUAMQP)
 
