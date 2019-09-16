@@ -69,7 +69,9 @@ function(linkUAMQP whatExecutableIsBuilding)
             file(COPY $ENV{OpenSSLDir}/bin/ssleay32.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
         endif()
     else()
-        target_link_libraries(${whatExecutableIsBuilding} uamqp aziotsharedutil ${OPENSSL_LIBRARIES})
+        target_link_libraries(${whatExecutableIsBuilding}
+            PUBLIC
+                uamqp aziotsharedutil OpenSSL::SSL OpenSSL::Crypto)
     endif()
 endfunction(linkUAMQP)
 
