@@ -48,8 +48,11 @@ int main(void)
                 (void)printf("\r\nDeviceTwin:\r\n");
                 printf("%s\r\n", deviceTwinJson);
 
-                const char* updateJson = "{\"properties\":{\"desired\":{\"telemetryInterval\":30}}}";
+                const char* updateJson = "{\"properties\":{\"desired\":{\"telemetryInterval\": [ \"9\", \"1190\", \"11\" ]  }}}";
+                //const char* updateJson = "{\"properties\":{\"desired\":{\"telemetryInterval\":30}}}";
                 char* updatedDeviceTwinJson;
+
+                printf("Updating JSON to be <%s>\n", updateJson);
 
                 if ((updatedDeviceTwinJson = IoTHubDeviceTwin_UpdateTwin(serviceClientDeviceTwinHandle, deviceId, updateJson)) == NULL)
                 {

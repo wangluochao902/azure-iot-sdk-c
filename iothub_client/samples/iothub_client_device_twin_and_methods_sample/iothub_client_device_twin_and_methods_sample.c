@@ -227,57 +227,8 @@ static void getCompleteDeviceTwinOnDemandCallback(DEVICE_TWIN_UPDATE_STATE updat
 static void deviceTwinCallback(DEVICE_TWIN_UPDATE_STATE update_state, const unsigned char* payLoad, size_t size, void* userContextCallback)
 {
     (void)update_state;
-    (void)size;
-
-    Car* oldCar = (Car*)userContextCallback;
-    Car* newCar = parseFromJson((const char*)payLoad, update_state);
-
-    if (newCar->changeOilReminder != NULL)
-    {
-        if ((oldCar->changeOilReminder != NULL) && (strcmp(oldCar->changeOilReminder, newCar->changeOilReminder) != 0))
-        {
-            free(oldCar->changeOilReminder);
-        }
-        
-        if (oldCar->changeOilReminder == NULL)
-        {
-            printf("Received a new changeOilReminder = %s\n", newCar->changeOilReminder);
-            if ( NULL != (oldCar->changeOilReminder = malloc(strlen(newCar->changeOilReminder) + 1)))
-            {
-                (void)strcpy(oldCar->changeOilReminder, newCar->changeOilReminder);
-                free(newCar->changeOilReminder);
-            }
-        }
-    }
-
-    if (newCar->settings.desired_maxSpeed != 0)
-    {
-        if (newCar->settings.desired_maxSpeed != oldCar->settings.desired_maxSpeed)
-        {
-            printf("Received a new desired_maxSpeed = %" PRIu8 "\n", newCar->settings.desired_maxSpeed);
-            oldCar->settings.desired_maxSpeed = newCar->settings.desired_maxSpeed;
-        }
-    }
-
-    if (newCar->settings.location.latitude != 0)
-    {
-        if (newCar->settings.location.latitude != oldCar->settings.location.latitude)
-        {
-            printf("Received a new latitude = %f\n", newCar->settings.location.latitude);
-            oldCar->settings.location.latitude = newCar->settings.location.latitude;
-        }
-    }
-
-    if (newCar->settings.location.longitude != 0)
-    {
-        if (newCar->settings.location.longitude != oldCar->settings.location.longitude)
-        {
-            printf("Received a new longitude = %f\n", newCar->settings.location.longitude);
-            oldCar->settings.location.longitude = newCar->settings.location.longitude;
-        }
-    }
-
-    free(newCar);
+    (void)userContextCallback;
+    printf("TwinUpdate result:\r\n%.*s\r\n", (int)size, payLoad);
 }
 
 static void reportedStateCallback(int status_code, void* userContextCallback)
@@ -343,7 +294,7 @@ static void iothub_client_device_twin_and_methods_sample_run(void)
             car.state.softwareVersion = 1;
             car.state.vanityPlate = "1I1";
 
-            char* reportedProperties = serializeToJson(&car);
+            char* reportedProperties = "{ \"telem2\": [ \"44\", \"abc\", \"000\"] }";
 
             (void)IoTHubDeviceClient_GetTwinAsync(iotHubClientHandle, getCompleteDeviceTwinOnDemandCallback, NULL);
             (void)IoTHubDeviceClient_SendReportedState(iotHubClientHandle, (const unsigned char*)reportedProperties, strlen(reportedProperties), reportedStateCallback, NULL);
@@ -353,7 +304,7 @@ static void iothub_client_device_twin_and_methods_sample_run(void)
             (void)getchar();
 
             IoTHubDeviceClient_Destroy(iotHubClientHandle);
-            free(reportedProperties);
+            //free(reportedProperties);
             free(car.changeOilReminder);
         }
 
