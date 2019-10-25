@@ -105,7 +105,7 @@ jobs:
   dependsOn: Cross_Compile
   condition: succeeded()
   pool: 
-    name: devicelab-02
+    name: E2E-Python-RPI
   steps:  
   - task: DownloadBuildArtifacts@0
     displayName: 'Download Build Artifacts'
@@ -166,7 +166,7 @@ jobs:
   dependsOn: Run_AMQP_DT_E2E_Test
   condition: ne('True', variables['ADDITIONAL_TEST'])
   pool: 
-    name: devicelab-02
+    name: E2E-Python-RPI
   steps:  
   - script: |
       cd $(Build.ArtifactStagingDirectory)
@@ -193,7 +193,7 @@ jobs:
   dependsOn: Run_MQTT_DT_E2E_Test
   condition: ne('True', variables['ADDITIONAL_TEST'])
   pool: 
-    name: devicelab-02
+    name: E2E-Python-RPI
   steps:  
   - script: |
       cd $(Build.ArtifactStagingDirectory)
@@ -220,7 +220,7 @@ jobs:
   dependsOn: Run_AMQP_DM_E2E_Test
   condition: ne('True', variables['ADDITIONAL_TEST'])
   pool: 
-    name: devicelab-02
+    name: E2E-Python-RPI
   steps:  
   - script: |
       cd $(Build.ArtifactStagingDirectory)
@@ -248,7 +248,7 @@ jobs:
   # Disabling extra task for now until feedback on use of Library Variables in conditional statements
   condition: in('True', 'False')
   pool: 
-    name: devicelab-02
+    name: E2E-Python-RPI
   steps:
   - task: DownloadBuildArtifacts@0
     displayName: 'Download Build Artifacts'
